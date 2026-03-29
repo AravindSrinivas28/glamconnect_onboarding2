@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlamConnect — Join as a Beautician</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #E91E6C;
+    --rose-dark: #AD1457;
+    --rose-light: #FCE4EC;
+    --gold: #C9982A;
+    --gold-light: #FAF3E4;
+    --beige: #F4EEE6;
+    --warm-white: #FBF8F4;
+    --charcoal: #2D2D2D;
+    --grey: #8C857D;
+    --border: #EDE8E2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--rose-dark);
+    padding: 60px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(201,152,42,0.25) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    pointer-events: none;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+    top: 80px;
+    right: -60px;
+    pointer-events: none;
+  }
+
+  /* Sparkle logo */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-headline {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    background: rgba(201,152,42,0.25);
+    border: 1px solid rgba(201,152,42,0.4);
+    color: #F0C96A;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: #F0C96A;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 48px;
+  }
+
+  .perks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .perk {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideIn 0.5s forwards;
+  }
+
+  .perk:nth-child(1) { animation-delay: 0.3s; }
+  .perk:nth-child(2) { animation-delay: 0.45s; }
+  .perk:nth-child(3) { animation-delay: 0.6s; }
+  .perk:nth-child(4) { animation-delay: 0.75s; }
+
+  .perk-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .perk-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+  }
+
+  .perk-text strong {
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .hero-footer {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── FORM PANEL ── */
+  .hero-right {
+    background: var(--warm-white);
+    padding: 60px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .form-header {
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.2s forwards;
+  }
+
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .form-subtitle {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  .form-subtitle span {
+    color: var(--rose);
+    font-weight: 500;
+  }
+
+  /* Form */
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.35s forwards;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-group.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--charcoal);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--charcoal);
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input::placeholder { color: #C4BDB5; }
+
+  input:focus, select:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(233,30,108,0.08);
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  .select-wrapper::after {
+    content: '▾';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--grey);
+    pointer-events: none;
+    font-size: 12px;
+  }
+
+  /* Specialty chips */
+  .specialty-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--charcoal);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chip input[type="checkbox"] {
+    display: none;
+  }
+
+  .chip-label {
+    padding: 7px 14px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    font-size: 13px;
+    color: var(--grey);
+    background: #fff;
+    transition: all 0.18s;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .chip input:checked + .chip-label {
+    background: var(--rose-light);
+    border-color: var(--rose);
+    color: var(--rose-dark);
+    font-weight: 500;
+  }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .submit-btn:hover {
+    background: var(--rose-dark);
+    box-shadow: 0 8px 24px rgba(233,30,108,0.3);
+    transform: translateY(-1px);
+  }
+
+  .submit-btn:active { transform: translateY(0); }
+
+  .submit-btn:disabled {
+    background: #C4BDB5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+
+  /* Success state */
+  .success-panel {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 40px 0;
+  }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--rose-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+
+  .success-subtitle {
+    font-size: 15px;
+    color: var(--grey);
+    line-height: 1.7;
+    max-width: 320px;
+  }
+
+  .success-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold-light);
+    border: 1px solid rgba(201,152,42,0.3);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 100px;
+  }
+
+  /* Error message */
+  .error-msg {
+    font-size: 12px;
+    color: #C45B5B;
+    margin-top: 4px;
+    display: none;
+  }
+
+  /* Decorative elements */
+  .deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .deco-1 {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(233,30,108,0.06) 0%, transparent 70%);
+    top: -60px;
+    right: -60px;
+  }
+
+  .deco-2 {
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(201,152,42,0.08) 0%, transparent 70%);
+    bottom: 60px;
+    left: -40px;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    background: var(--beige);
+    border-top: 1px solid var(--border);
+    padding: 20px 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.5s forwards;
+  }
+
+  .stat-item:nth-child(1) { animation-delay: 0.7s; }
+  .stat-item:nth-child(2) { animation-delay: 0.85s; }
+  .stat-item:nth-child(3) { animation-delay: 1s; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--rose);
+    line-height: 1;
+  }
+
+  .stat-desc {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.4;
+  }
+
+  /* Animations */
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-it-works {
+    background: var(--beige);
+    border-top: 1px solid var(--border);
+    padding: 80px 56px;
+  }
+
+  .section-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+  }
+
+  .section-subtitle {
+    font-size: 15px;
+    color: var(--grey);
+    margin-bottom: 52px;
+  }
+
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .step {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 28px;
+    flex: 1;
+    max-width: 260px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--rose);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .step-icon { font-size: 32px; margin-bottom: 16px; }
+
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+  }
+
+  .step-desc { font-size: 13px; color: var(--grey); line-height: 1.7; }
+
+  .step-arrow { font-size: 24px; color: var(--border); flex-shrink: 0; margin-bottom: 16px; }
+
+  /* ── FAQ ── */
+  .faq-section {
+    background: #fff;
+    border-top: 1px solid var(--border);
+    padding: 80px 56px;
+  }
+
+  .faq-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 64px;
+    text-align: left;
+    align-items: start;
+  }
+
+  .faq-inner .section-title,
+  .faq-inner .section-subtitle,
+  .faq-inner .section-eyebrow {
+    text-align: left;
+    display: block;
+  }
+
+  .faqs { display: flex; flex-direction: column; }
+
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-item:first-child { border-top: 1px solid var(--border); }
+
+  .faq-q {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--charcoal);
+    text-align: left;
+    gap: 16px;
+    transition: color 0.2s;
+  }
+
+  .faq-q:hover { color: var(--rose); }
+
+  .faq-icon {
+    font-size: 20px;
+    color: var(--rose);
+    flex-shrink: 0;
+    font-weight: 300;
+    transition: transform 0.2s;
+  }
+
+  .faq-icon.open { transform: rotate(45deg); }
+
+  .faq-a {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.8;
+    padding: 0 4px 18px;
+    display: none;
+  }
+
+  .faq-a.open { display: block; }
+
+  /* ── CONTACT BAR ── */
+  .contact-bar {
+    background: var(--rose-dark);
+    padding: 32px 56px;
+  }
+
+  .contact-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .contact-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .contact-sub { font-size: 13px; color: rgba(255,255,255,0.65); }
+
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+  }
+
+  .wa-btn:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-left {
+      padding: 48px 28px;
+      min-height: auto;
+    }
+
+    .hero-right {
+      padding: 48px 28px;
+    }
+
+    .field-group.two-col {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-bar {
+      grid-template-columns: 1fr;
+      padding: 24px 28px;
+      gap: 20px;
+    }
+
+    .hero-title { font-size: 36px; }
+    .how-it-works { padding: 60px 28px; }
+    .steps { flex-direction: column; align-items: stretch; }
+    .step { max-width: 100%; }
+    .step-arrow { transform: rotate(90deg); margin: 0 auto; }
+    .faq-section { padding: 60px 28px; }
+    .faq-inner { grid-template-columns: 1fr; gap: 32px; }
+    .contact-bar { padding: 28px; }
+    .contact-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <!-- LEFT PANEL -->
+  <div class="hero-left">
+    <a href="#" class="logo">
+      <!-- Sparkle SVG -->
+      <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="44" height="44" rx="12" fill="#C2185B"/>
+        <path d="M22 8 L24.5 19.5 L36 22 L24.5 24.5 L22 36 L19.5 24.5 L8 22 L19.5 19.5 Z" fill="white" opacity="0.95"/>
+        <circle cx="22" cy="22" r="3" fill="#F0C96A"/>
+        <circle cx="22" cy="22" r="1.2" fill="white"/>
+      </svg>
+      <span class="logo-text">GlamConnect</span>
+    </a>
+
+    <div class="hero-headline">
+      <div class="eyebrow">✦ Founding Artist Program · Chennai</div>
+      <h1 class="hero-title">
+        Turn your talent<br>into a <em>thriving</em><br>business.
+      </h1>
+      <p class="hero-subtitle">
+        Join Chennai's first on-demand beauty platform. Work on your own schedule, keep more of what you earn, and build a loyal client base — all from one app.
+      </p>
+
+      <div class="perks">
+        <div class="perk">
+          <div class="perk-icon">💸</div>
+          <div class="perk-text"><strong>Zero commission</strong> for your first 3 months</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">📅</div>
+          <div class="perk-text"><strong>You set your schedule</strong> — work when you want</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">⭐</div>
+          <div class="perk-text"><strong>Founding Artist badge</strong> on your profile forever</div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">📍</div>
+          <div class="perk-text"><strong>Serve clients</strong> in your preferred Chennai neighbourhoods</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-footer">
+      GlamConnect v1.0 · Chennai, Tamil Nadu · © 2026
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — FORM -->
+  <div class="hero-right">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+
+    <div id="formWrapper">
+      <div class="form-header">
+        <h2 class="form-title">Apply to join</h2>
+        <p class="form-subtitle">
+          We're selecting <span>15 Founding Artists</span> in Chennai.<br>Takes less than 2 minutes.
+        </p>
+      </div>
+
+      <form class="signup-form" id="signupForm" novalidate>
+
+        <div class="field-group two-col">
+          <div>
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="e.g. Priya Sharma" autocomplete="name" />
+            <div class="error-msg" id="nameError">Please enter your name</div>
+          </div>
+          <div>
+            <label for="phone">WhatsApp Number</label>
+            <input type="tel" id="phone" placeholder="e.g. 9876543210" maxlength="10" />
+            <div class="error-msg" id="phoneError">Enter a valid 10-digit number</div>
+          </div>
+        </div>
+
+        <div class="field-group two-col">
+          <div>
+            <label for="experience">Years of Experience</label>
+            <div class="select-wrapper">
+              <select id="experience">
+                <option value="" disabled selected>Select</option>
+                <option>Less than 1 year</option>
+                <option>1–2 years</option>
+                <option>3–5 years</option>
+                <option>6–10 years</option>
+                <option>10+ years</option>
+              </select>
+            </div>
+            <div class="error-msg" id="expError">Please select experience</div>
+          </div>
+          <div>
+            <label for="area">Your Area in Chennai</label>
+            <div class="select-wrapper">
+              <select id="area">
+                <option value="" disabled selected>Select area</option>
+                <option>Anna Nagar</option>
+                <option>Adyar</option>
+                <option>T. Nagar</option>
+                <option>Velachery</option>
+                <option>OMR / Sholinganallur</option>
+                <option>Porur</option>
+                <option>Nungambakkam</option>
+                <option>Mylapore</option>
+                <option>Tambaram</option>
+                <option>Chromepet</option>
+                <option>Perambur</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="error-msg" id="areaError">Please select your area</div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="specialty-label">Specialties <span style="color:#C4BDB5;font-weight:300;text-transform:none;letter-spacing:0">(select all that apply)</span></div>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" value="Bridal Makeup"><span class="chip-label">💍 Bridal</span></label>
+            <label class="chip"><input type="checkbox" value="Party Makeup"><span class="chip-label">🎉 Party Makeup</span></label>
+            <label class="chip"><input type="checkbox" value="Skincare"><span class="chip-label">✨ Skincare</span></label>
+            <label class="chip"><input type="checkbox" value="Haircare"><span class="chip-label">💇 Haircare</span></label>
+            <label class="chip"><input type="checkbox" value="Threading & Waxing"><span class="chip-label">🌿 Threading & Waxing</span></label>
+            <label class="chip"><input type="checkbox" value="Nail Art"><span class="chip-label">💅 Nail Art</span></label>
+            <label class="chip"><input type="checkbox" value="Mehendi"><span class="chip-label">🌸 Mehendi</span></label>
+          </div>
+          <div class="error-msg" id="specialtyError">Please select at least one specialty</div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <div class="btn-inner">
+            <div class="spinner" id="spinner"></div>
+            <span id="btnText">Apply as Founding Artist →</span>
+          </div>
+        </button>
+
+      </form>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="success-panel" id="successPanel">
+      <div class="success-icon">✦</div>
+      <h3 class="success-title">You're on the list!</h3>
+      <p class="success-subtitle">
+        Thank you for applying. We'll WhatsApp you within 48 hours with next steps to get you set up on GlamConnect.
+      </p>
+      <div class="success-badge">
+        ⭐ Founding Artist · Chennai
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-it-works">
+  <div class="section-inner">
+    <div class="section-eyebrow">✦ Simple & Fast</div>
+    <h2 class="section-title">How it works</h2>
+    <p class="section-subtitle">Get started on GlamConnect in three easy steps</p>
+    <div class="steps">
+      <div class="step" style="animation-delay:0.1s">
+        <div class="step-num">01</div>
+        <div class="step-icon">📋</div>
+        <h3 class="step-title">Apply here</h3>
+        <p class="step-desc">Fill in this form with your details and specialties. Takes under 2 minutes.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step" style="animation-delay:0.25s">
+        <div class="step-num">02</div>
+        <div class="step-icon">📱</div>
+        <h3 class="step-title">We onboard you</h3>
+        <p class="step-desc">We'll WhatsApp you within 48 hours, send you the app, and help you set up your profile.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step" style="animation-delay:0.4s">
+        <div class="step-num">03</div>
+        <div class="step-icon">💰</div>
+        <h3 class="step-title">Start earning</h3>
+        <p class="step-desc">Set your availability, receive bookings from customers nearby, and get paid.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="section-inner faq-inner">
+    <div>
+      <div class="section-eyebrow" style="color:var(--rose)">✦ Questions</div>
+      <h2 class="section-title">Frequently asked</h2>
+      <p class="section-subtitle">Everything you need to know before joining</p>
+    </div>
+    <div class="faqs">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Is GlamConnect free to join?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes, completely free to join. As a Founding Artist, you also pay zero commission for your first 3 months. After that, a small platform fee applies per booking.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Do I need to have my own salon?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">No. GlamConnect is for at-home beauty services — you travel to the customer's location. All you need is your skills, your kit, and a phone.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I set my own prices and availability?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Absolutely. You decide your service prices, working days, and working hours. You're in full control of your schedule — GlamConnect just brings you the customers.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Which areas of Chennai can I serve?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">You set your own service radius on the app. You can choose to serve customers within 5 km, 10 km, or more from your location — completely up to you.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How do I receive payments?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Customers pay through the app (UPI, card, or wallet). Earnings are tracked in your beautician dashboard and payouts are processed directly to your bank account.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What if I have more questions?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">WhatsApp us directly at +91 95008 03860 — we're happy to answer anything before you apply.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHATSAPP CONTACT BAR -->
+<div class="contact-bar">
+  <div class="contact-inner">
+    <div class="contact-text">
+      <div class="contact-title">Have questions before applying?</div>
+      <div class="contact-sub">We're real people. WhatsApp us and we'll reply within a few hours.</div>
+    </div>
+    <a href="https://wa.me/919500803860?text=Hi%2C%20I%20saw%20the%20GlamConnect%20Founding%20Artist%20page%20and%20wanted%20to%20know%20more." class="wa-btn" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div>
+      <div class="stat-num">₹0</div>
+      <div class="stat-desc">Commission for<br>first 3 months</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div>
+      <div class="stat-num">15</div>
+      <div class="stat-desc">Founding Artist<br>spots available</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div>
+      <div class="stat-num">Chennai</div>
+      <div class="stat-desc">Launching in your<br>city first</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbz6F0eYLjNCnXxCQimWeknD9xf_9RhBryGxsuPpvSwswntOY1ZvI4Ng0TEa62tU2WbsuA/exec';
+
+  // ── FAQ TOGGLE ──
+  function toggleFaq(btn) {
+    var answer = btn.nextElementSibling;
+    var icon = btn.querySelector('.faq-icon');
+    var isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+    document.querySelectorAll('.faq-icon').forEach(function(i) { i.classList.remove('open'); });
+    if (!isOpen) {
+      answer.classList.add('open');
+      icon.classList.add('open');
+    }
+  }
+
+  // ── FORM VALIDATION ──
+  function showError(id, show) {
+    document.getElementById(id).style.display = show ? 'block' : 'none';
+  }
+
+  function validate() {
+    var name = document.getElementById('name').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var exp = document.getElementById('experience').value;
+    var area = document.getElementById('area').value;
+    var specialties = Array.from(document.querySelectorAll('.chips input:checked')).map(function(c) { return c.value; });
+
+    showError('nameError', !name);
+    showError('phoneError', !/^\d{10}$/.test(phone));
+    showError('expError', !exp);
+    showError('areaError', !area);
+    showError('specialtyError', specialties.length === 0);
+
+    var valid = name && /^\d{10}$/.test(phone) && exp && area && specialties.length > 0;
+    return { valid: valid, name: name, phone: phone, exp: exp, area: area, specialties: specialties.join(', ') };
+  }
+
+  // ── FORM SUBMIT ──
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var result = validate();
+    if (!result.valid) return;
+
+    var submitBtn = document.getElementById('submitBtn');
+    var spinner = document.getElementById('spinner');
+    var btnText = document.getElementById('btnText');
+
+    submitBtn.disabled = true;
+    spinner.style.display = 'block';
+    btnText.textContent = 'Submitting...';
+
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: result.name, phone: result.phone, experience: result.exp, specialties: result.specialties, area: result.area })
+    }).then(function() {
+      document.getElementById('formWrapper').style.display = 'none';
+      document.getElementById('successPanel').style.display = 'flex';
+    }).catch(function() {
+      btnText.textContent = 'Something went wrong. Try again.';
+      submitBtn.disabled = false;
+      spinner.style.display = 'none';
+    });
+  });
+
+  // ── PHONE NUMBERS ONLY ──
+  document.getElementById('phone').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 10);
+  });
+</script>
+</body>
+</html>
